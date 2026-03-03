@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>幸福沖繩之旅 - 行程規劃</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-cyan-50 flex justify-center items-center min-h-screen m-0 py-4 font-sans text-gray-800">
+
+  <div class="w-full h-screen bg-cyan-50 shadow-2xl flex flex-col relative overflow-hidden">
+        
+    <!-- 主滾動區域 -->
+    <div class="flex-1 p-5 overflow-y-auto pb-32" id="content-area">
+      
+      <div id="view-itinerary" class="block animate-fade-in pb-4">
+        
+        <!-- ========================================== Day 1 ========================================== -->
+        <div id="day1-content" class="day-content">
+          <div class="flex flex-col items-center mb-6">
+            <div class="bg-cyan-100 rounded-full p-3 mb-3">
+              <svg class="w-8 h-8 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800">第一天：抵達與市區漫步</h2>
+            <p class="text-gray-500 text-sm mt-1">2026年4月21日 (星期二)</p>
+          </div>
+
+          <div class="relative border-l-2 border-orange-200 ml-3 pl-6 space-y-6">
+            <!-- d1-1 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d1-1')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                入境後搭單軌電車前往飯店
+                <svg id="icon-d1-1" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d1-1" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://www.yui-rail.co.jp/common/uploads/kv01_pc_nahaairport_tc_img.jpg" class="w-full h-full object-cover" alt="Yui Rail">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">抵達那霸機場，搭乘沖繩唯一軌道交通 Yui Rail。這條高架鐵路橫跨市區，是感受現代沖繩的第一步。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=那霸機場" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">💡 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🎫 1. 購買一日券（800日圓），24小時內無限次搭乘。</li>
+                    <li>📸 2. 第一節車廂視角極佳，可拍到列車穿梭建築畫面。</li>
+                    <li>🧳 3. 站點皆有電梯，大型行李搬運也完全沒問題。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d1-2 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d1-2')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                嘉新酒店 (Hotel Collective) 入住
+                <svg id="icon-d1-2" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d1-2" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://www.segreene.com/wp-content/uploads/2023/11/facade_exterior_0-scaled.jpg" class="w-full h-full object-cover" alt="Hotel Collective">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">位於國際通核心地帶的頂級酒店，提供極致奢華體驗。下樓即是購物區，是探索那霸的最佳基地。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=Hotel+Collective" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">⭐ 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🏠 1. 大廳裝潢高雅，大型吊燈是網美必拍熱點。</li>
+                    <li>📍 2. 地點無敵，出門就是國際通中心，逛累了隨時回房。</li>
+                    <li>🏊 3. 推薦去室外泳池區放鬆，享受都市綠洲氛圍。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d1-3 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d1-3')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                國際通散策 & 晚餐
+                <svg id="icon-d1-3" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d1-3" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://images.trvl-media.com/place/6206760/38cfbb25-5e3e-4cfb-8df2-cf3624d341c9.jpg" class="w-full h-full object-cover" alt="Kokusai Dori">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">那霸最繁華的街道，充滿琉球風情商店、美食與創意手作店，是體驗沖繩熱情的最佳場域。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=國際通" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🍴 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>😋 1. 晚餐試試石垣牛或阿古豬料理，感受道地鮮甜。</li>
+                    <li>🎁 2. 巷弄內的「平和通」藏有許多特色小店，價格實惠。</li>
+                    <li>📸 3. 必拍街邊特色石獅子或誇張的看板，極具趣味。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== Day 2 ========================================== -->
+        <div id="day2-content" class="day-content hidden">
+          <div class="flex flex-col items-center mb-6">
+            <div class="bg-cyan-100 rounded-full p-3 mb-3">
+              <svg class="w-8 h-8 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800">第二天：市集、租車與美國村</h2>
+            <p class="text-gray-500 text-sm mt-1">2026年4月22日 (星期三)</p>
+          </div>
+          <div class="relative border-l-2 border-orange-200 ml-3 pl-6 space-y-6">
+            <!-- d2-1 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d2-1')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                第一牧志公設市場
+                <svg id="icon-d2-1" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d2-1" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden">
+                    <img src="https://d1grca2t3zpuug.cloudfront.net/2025/12/makishipm2025-1850x1233-1765775854.webp" class="w-full h-full object-cover">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">那霸的廚房。重新裝修後環境舒適，可品嚐最道地的生鮮，二樓食堂更提供客製料理服務。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=第一牧志公設市場" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🦐 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🍴 1. 一樓挑選新鮮魚貨，二樓代客料理即時享用。</li>
+                    <li>🐚 2. 必試色彩鮮艷的熱帶魚與鮮脆的夜光貝。</li>
+                    <li>⏰ 3. 早上10點後抵達店家才全開，是早午餐首選。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d2-2 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d2-2')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                美麗島租車 (領車啟程)
+                <svg id="icon-d2-2" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d2-2" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiQf3hms94aDwpEIOmNN_LcNM_iZXSeP3JCQ&s" class="w-full h-full object-cover">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">領取陪伴接下來旅程的座駕。美麗島租車提供便利中文服務與接駁，讓自駕自由行輕鬆上手。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=美ら島レンタカー" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🚗 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🆔 1. 必備「台灣駕照正本」與「日文譯本」，缺一不可。</li>
+                    <li>📹 2. 領車時建議環繞車身錄影存證，確認既有傷痕已紀錄。</li>
+                    <li>🚦 3. 沖繩駕駛方向與台灣相反，請務必靠左行駛。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d2-3 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d2-3')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                港川外人住宅區 (Minatogawa)
+                <svg id="icon-d2-3" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d2-3" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden">
+                    <img src="https://www.jsimplelife.com/wp-content/uploads/2025/06/DSC05249-1536x1022.jpg" class="w-full h-full object-cover">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">早期美軍家屬的住宅區，現在進駐了多間特色咖啡館、手作雜貨與知名甜點店。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=港川外人住宅" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🍰 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🍓 1. 必吃 oHacorte 水果塔，季節限定口味極受歡迎。</li>
+                    <li>🥖 2. 探訪 ippe coppe 手作麵包店，感受紮實的天然麥香。</li>
+                    <li>📸 3. 彩色平房與街道命名非常適合穿搭美拍。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d2-4 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d2-4')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                San-A PARCO CITY 購物
+                <svg id="icon-d2-4" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d2-4" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden">
+                    <img src="https://d1grca2t3zpuug.cloudfront.net/2025/02/67a084180c566-870x500.webp" class="w-full h-full object-cover">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">沖繩最新的海景商場。品牌齊全且設有大片海景休息區，購物體驗極佳。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=San-A+Urasoe+West+Coast+PARCO+CITY" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🛍️ 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>👗 1. 品牌非常完整，適合安排集中採買日系品牌。</li>
+                    <li>🌊 2. 美食街視野極佳，看海吃美食超享受。</li>
+                    <li>🆓 3. 提供大量置物櫃，方便空手逛街。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d2-5 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d2-5')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                美國村夜色與晚餐
+                <svg id="icon-d2-5" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d2-5" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden">
+                    <img src="https://bobowin.blog/wp-content/uploads/20190916164556_98.jpg" class="w-full h-full object-cover">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">夜晚的北谷美國村充滿異國氛圍，霓虹燈映照在海面上，為一天劃下浪漫句點。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=美國村" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🎡 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🌅 1. 建議日落前抵達沙灘，捕捉絕美金黃夕陽。</li>
+                    <li>🍔 2. 晚餐推薦 A&W 漢堡或迴轉壽司，感受多元飲食。</li>
+                    <li>✨ 3. Depot Island 巷弄夜晚打光非常美，拍照首選。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== Day 3 ========================================== -->
+        <div id="day3-content" class="day-content hidden">
+          <div class="flex flex-col items-center mb-6">
+            <div class="bg-cyan-100 rounded-full p-3 mb-3">
+              <svg class="w-8 h-8 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800">第三天：北部海洋與古宇利島</h2>
+            <p class="text-gray-500 text-sm mt-1">2026年4月23日 (星期四)</p>
+          </div>
+          <div class="relative border-l-2 border-orange-200 ml-3 pl-6 space-y-6">
+            <!-- d3-1 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d3-1')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                古宇利大橋 & 海洋塔
+                <svg id="icon-d3-1" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d3-1" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://static.gltjp.com/glt/data/article/21000/20981/20250520_162729_4419b1b5_w1920.webp" class="w-full h-full object-cover" alt="古宇利大橋">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">跨越近2公里的湛藍海景大橋。海洋塔可將古宇利島全景收納眼底，海水呈漸層色非常迷人。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=古宇利海洋塔" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🌊 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🚐 1. 搭乘海洋塔導覽車上坡，輕鬆看風景。</li>
+                    <li>💎 2. 塔內收藏上萬顆珍惜貝殼，是參觀重點。</li>
+                    <li>📷 3. 橋頭展望區是拍大橋入海的最佳點。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d3-2 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d3-2')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                KOURI SHRIMP (蝦蝦飯午餐)
+                <svg id="icon-d3-2" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d3-2" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://www.tony60533.com/wp-content/uploads/2023/04/18-2.jpg" class="w-full h-full object-cover" alt="蝦蝦飯">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">最高人氣的夏威夷風情餐點。鮮蝦配上蒜香奶油，在海風下享用更添風味。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=KOURI+SHRIMP" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🍤 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🔥 1. 必吃蒜香原味，口感紮實香氣濃郁。</li>
+                    <li>🍋 2. 搭配沖繩檸檬蘇打，去油解膩首選。</li>
+                    <li>🌊 3. 二樓座位視野佳，可看海景用餐。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d3-3 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d3-3')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                心形岩 (Heart Rock)
+                <svg id="icon-d3-3" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d3-3" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://pimg.1px.tw/mina520mina/1554399987-3686875976.jpg" class="w-full h-full object-cover" alt="心形岩">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">位於島北端的沙灘秘境。兩座礁石重疊看起來像大愛心，是祈求良緣的熱點。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=Heart+Rock+Okinawa" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">💕 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>📷 1. 抓對角度，拍出完美的「一顆愛心」。</li>
+                    <li>👟 2. 沙灘入口路徑稍窄，建議穿布鞋。</li>
+                    <li>🅿️ 3. 周邊設有收費停車場。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d3-4 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d3-4')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                美麗海水族館
+                <svg id="icon-d3-4" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d3-4" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://static.gltjp.com/glt/data/directory/12000/11552/20210415_162720_704d18cf_w1920.webp" class="w-full h-full object-cover" alt="美麗海水族館">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">在巨大的「黑潮之海」前見證鯨鯊與鬼蝠魟共舞，感受深海的震撼。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=美麗海水族館" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🐳 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🐋 1. 下午 3 點與 5 點有鯨鯊餵食秀。</li>
+                    <li>🐬 2. 室外海豚表演劇場是免費重點。</li>
+                    <li>☕ 3. 推薦預約黑潮之海旁的咖啡位。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d3-5 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d3-5')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                萬座毛 + 返程
+                <svg id="icon-d3-5" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d3-5" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://static.gltjp.com/glt/data/directory/16000/15041/20231122_113157_c649d946_w1920.webp" class="w-full h-full object-cover" alt="萬座毛">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">如象鼻般的天然岩礁與廣闊草原。欣賞壯闊海景，帶著回憶返回那霸。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=萬座毛" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">⛰️ 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>📸 1. 象鼻岩是最佳合影處。</li>
+                    <li>🌅 2. 推薦黃昏前來，橘色夕陽灑在斷崖上極美。</li>
+                    <li>🍜 3. 附近有居酒屋，回程晚餐推薦。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== Day 4 ========================================== -->
+        <div id="day4-content" class="day-content hidden">
+          <div class="flex flex-col items-center mb-6">
+            <div class="bg-cyan-100 rounded-full p-3 mb-3">
+              <svg class="w-8 h-8 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800">第四天：南部文化與購物</h2>
+            <p class="text-gray-500 text-sm mt-1">2026年4月24日 (星期五)</p>
+          </div>
+          <div class="relative border-l-2 border-orange-200 ml-3 pl-6 space-y-6">
+            <!-- d4-1 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d4-1')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                玉泉洞 & 沖繩王國
+                <svg id="icon-d4-1" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d4-1" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://d1grca2t3zpuug.cloudfront.net/2025/05/okinawaworld0507111-800x500.webp" class="w-full h-full object-cover" alt="玉泉洞">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">深入神秘地底宮殿。玉泉洞耗時萬年成形，王國村重現琉球傳統工藝。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=玉泉洞" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🐉 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🥁 1. 艾薩太鼓群舞秀必看，震撼力驚人。</li>
+                    <li>💧 2. 洞內地面濕滑，建議穿著防滑平底鞋。</li>
+                    <li>🧶 3. 王國村提供琉球染体験。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d4-2 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d4-2')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                海軍壕公園 (特色滑梯)
+                <svg id="icon-d4-2" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d4-2" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://www.tabirai.net/tabirai-uploader/img/0015778/s1_0015778.jpg" class="w-full h-full object-cover" alt="海軍壕公園">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">融合軍事歷史與休閒。公園高處可俯瞰那霸全市，溜滑梯是孩子最愛。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=海軍壕公園" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🛝 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🍑 1. 溜滑梯記得屁股墊厚紙板。</li>
+                    <li>🕊️ 2. 可參觀舊海軍司令部壕。</li>
+                    <li>🏙️ 3. 傍晚那霸市區華燈初上非常美。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d4-3 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d4-3')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                Ashibinaa Outlet 購物
+                <svg id="icon-d4-3" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d4-3" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://d1grca2t3zpuug.cloudfront.net/2024/02/20240206ashibinaa_fb.jpg" class="w-full h-full object-cover" alt="Ashibinaa Outlet">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">全沖繩唯一的 Outlet，匯集 100 多個品牌，是採買戰利品首選。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=Ashibinaa+Outlet" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🛍️ 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🎟️ 1. 到服務處出示護照領優惠券。</li>
+                    <li>👟 2. 運動品牌折扣常低於五折。</li>
+                    <li>🚌 3. 適合前往機場前逛。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d4-4 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d4-4')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                瀨長島夕陽晚餐
+                <svg id="icon-d4-4" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d4-4" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://static.gltjp.com/glt/data/article/21000/20766/20241230_235838_53854915_w1920.webp" class="w-full h-full object-cover" alt="瀨長島">
+                  </div>
+                  <div class="w-1/2 text-sm text-gray-600 leading-relaxed">
+                    純白建築伴隨海風。結合海島浪漫與美食，是放慢靈魂的最佳句點。
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=瀨長島Umikaji+Terrace" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🥞 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>✈️ 1. 看飛機起降感官超強。</li>
+                    <li>🥞 2. 幸福鬆餅建議官網預約。</li>
+                    <li>♨️ 3. 附近有足湯可舒緩疲勞。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== Day 5 ========================================== -->
+        <div id="day5-content" class="day-content hidden">
+          <div class="flex flex-col items-center mb-6">
+            <div class="bg-cyan-100 rounded-full p-3 mb-3">
+              <svg class="w-8 h-8 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800">第五天：最終巡禮與溫暖的家</h2>
+            <p class="text-gray-500 text-sm mt-1">2026年4月25日 (星期六)</p>
+          </div>
+          <div class="relative border-l-2 border-orange-200 ml-3 pl-6 space-y-6">
+            <!-- d5-1 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d5-1')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                波上宮巡禮
+                <svg id="icon-d5-1" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d5-1" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://itravelblog.net/wp-content/uploads/2025/06/%E6%B3%A2%E4%B8%8A%E5%AE%AE%E4%B8%80%E6%97%A5%E9%81%8A-01.webp" class="w-full h-full object-cover" alt="波上宮">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">建在懸崖上的神社。參拜祈求平安歸國與順心。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=波上宮" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">⛩️ 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🎒 1. 必買限定「書包御守」。</li>
+                    <li>🌉 2. 到大橋上拍斷崖神社全景。</li>
+                    <li>🏖️ 3. 波之上海灘是戲水最後一站。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d5-2 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d5-2')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                美麗島租車 (還車接駁)
+                <svg id="icon-d5-2" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d5-2" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiQf3hms94aDwpEIOmNN_LcNM_iZXSeP3JCQ&s" class="w-full h-full object-cover" alt="還車">
+                  </div>
+                  <div class="w-1/2">
+                    <p class="text-sm text-gray-600 leading-relaxed">結束自駕旅程。提供接駁前往機場。</p>
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=美ら島レンタカー" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">⛽ 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>⛽ 1. 務必「油箱加滿」歸還。</li>
+                    <li>🕒 2. 建議起飛前2.5小時抵達。</li>
+                    <li>📱 3. 檢查車內勿遺漏物品。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- d5-3 -->
+            <div class="relative">
+              <div class="absolute -left-[33px] top-1.5 w-4 h-4 rounded-full border-4 border-orange-400 bg-white"></div>
+              <button onclick="toggleContent('d5-3')" class="w-full bg-white rounded-xl shadow-sm border border-orange-50 p-4 text-left flex justify-between items-center hover:shadow-md transition-shadow text-gray-800 font-medium">
+                那霸機場採買 & 賦歸
+                <svg id="icon-d5-3" class="w-5 h-5 text-orange-400 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+              <div id="content-d5-3" class="hidden mt-2 bg-white rounded-xl shadow-sm border border-orange-50 p-4 animate-fade-in">
+                <div class="flex gap-4 mb-4">
+                  <div class="w-1/2 h-28 bg-gray-100 rounded-lg overflow-hidden border border-gray-100">
+                    <img src="https://d1grca2t3zpuug.cloudfront.net/2025/06/nahainfo01-1000x582-1748957269.webp" class="w-full h-full object-cover" alt="機場採購">
+                  </div>
+                  <div class="w-1/2 text-sm text-gray-600 leading-relaxed">帶著回憶賦歸。國內線二樓擁有最後的伴手禮激戰區。
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=Naha+Airport" target="_blank" class="bg-cyan-600 text-white text-[10px] px-3 py-1.5 rounded-full flex items-center gap-1 mt-2 w-max shadow-sm">點我導航</a>
+                  </div>
+                </div>
+                <div class="border-t border-gray-100 pt-3">
+                  <h4 class="text-xs font-bold text-orange-600 mb-2">🎁 遊覽重點與建議</h4>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>🍚 1. 必買「Potama」豬肉蛋飯糰。</li>
+                    <li>🍫 2. Royce 沖繩限定是頂級伴手禮。</li>
+                    <li>🛂 3. 建議在國內線區域買齊再入關。</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 次導覽列 (天數選擇) -->
+    <div class="fixed bottom-[80px] w-full z-10 pointer-events-none">
+      <div class="flex justify-center w-full px-4 max-w-md mx-auto pointer-events-auto">
+        <div class="flex space-x-3 overflow-x-auto whitespace-nowrap hide-scrollbar p-2">
+          <button id="btn-day1" onclick="switchDay(1)" class="day-btn active relative flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 rounded-full bg-white border-2 border-cyan-400 shadow-[0_4px_12px_rgba(6,182,212,0.3)] text-cyan-600 transition-all transform scale-110 group">
+            <svg class="w-6 h-6 mb-0.5 group-[.active]:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+            <span class="font-bold text-[10px] leading-tight">Day 1</span>
+          </button>
+          <button id="btn-day2" onclick="switchDay(2)" class="day-btn relative flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 rounded-full bg-white border border-cyan-100 shadow-sm text-cyan-600 hover:border-cyan-300 hover:shadow-md hover:scale-110 transition-all transform scale-100 group">
+             <svg class="w-6 h-6 mb-0.5 group-[.active]:animate-[wiggle_1s_ease-in-out_infinite]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+            <span class="font-bold text-[10px] leading-tight">Day 2</span>
+          </button>
+          <button id="btn-day3" onclick="switchDay(3)" class="day-btn relative flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 rounded-full bg-white border border-cyan-100 shadow-sm text-cyan-600 hover:border-cyan-300 hover:shadow-md hover:scale-110 transition-all transform scale-100 group">
+            <svg class="w-6 h-6 mb-0.5 group-[.active]:animate-[pulse_1.5s_ease-in-out_infinite]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span class="font-bold text-[10px] leading-tight">Day 3</span>
+          </button>
+          <button id="btn-day4" onclick="switchDay(4)" class="day-btn relative flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 rounded-full bg-white border border-cyan-100 shadow-sm text-cyan-600 hover:border-cyan-300 hover:shadow-md hover:scale-110 transition-all transform scale-100 group">
+            <svg class="w-6 h-6 mb-0.5 group-[.active]:animate-[spin_3s_linear_infinite]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            <span class="font-bold text-[10px] leading-tight">Day 4</span>
+          </button>
+          <button id="btn-day5" onclick="switchDay(5)" class="day-btn relative flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 rounded-full bg-white border border-cyan-100 shadow-sm text-cyan-600 hover:border-cyan-300 hover:shadow-md hover:scale-110 transition-all transform scale-100 group">
+             <svg class="w-6 h-6 mb-0.5 group-[.active]:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            <span class="font-bold text-[10px] leading-tight">Day 5</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 底部導覽 -->
+    <div class="flex border-t border-cyan-100 bg-white fixed bottom-0 w-full shadow-[0_-4px_15px_rgba(0,0,0,0.05)] z-20 pb-safe">
+      <button onclick="window.location.href='index.html'" id="nav-home" class="nav-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+        <span class="text-xs font-medium">首頁</span>
+      </button>
+      <button onclick="window.location.href='info.html'" id="nav-info" class="nav-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span class="text-xs font-medium">須知</span>
+      </button>
+      <button onclick="window.location.href='itinerary.html'" id="nav-itinerary" class="nav-btn active flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+        <span class="text-xs font-medium">行程</span>
+      </button>
+      <button onclick="window.location.href='expense.html'" id="nav-expense" class="nav-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span class="text-xs font-medium">記帳</span>
+      </button>
+      <button onclick="window.location.href='note.html'" id="nav-note" class="nav-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+        <span class="text-xs font-medium">手札</span>
+      </button>
+    </div>
+
+  </div>
+
+  <style>
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: #93c5fd; border-radius: 10px; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .nav-btn { color: #9ca3af; transition: all 0.3s ease; }
+    .nav-btn.active { color: #0ea5e9; font-weight: bold; }
+    @keyframes jumpBounce { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-4px) scale(1.1); } 100% { transform: translateY(0) scale(1); } }
+    @keyframes wiggle { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+  </style>
+
+  <script>
+    function toggleContent(id) {
+      const targetContent = document.getElementById(`content-${id}`);
+      const targetIcon = document.getElementById(`icon-${id}`);
+      const isAlreadyVisible = !targetContent.classList.contains('hidden');
+
+      const dayContainer = targetContent.closest('.day-content');
+      dayContainer.querySelectorAll('[id^="content-"]').forEach(content => content.classList.add('hidden'));
+      dayContainer.querySelectorAll('[id^="icon-"]').forEach(icon => icon.classList.remove('rotate-180'));
+
+      if (!isAlreadyVisible) {
+        targetContent.classList.remove('hidden');
+        targetContent.classList.add('animate-fade-in');
+        targetIcon.classList.add('rotate-180');
+        setTimeout(() => {
+          targetContent.parentElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+      }
+    }
+
+    function switchDay(day) {
+      document.querySelectorAll('.day-content').forEach(el => el.classList.add('hidden'));
+      const selectedDayContent = document.getElementById(`day${day}-content`);
+      selectedDayContent.classList.remove('hidden');
+      selectedDayContent.classList.add('animate-fade-in');
+      document.getElementById('content-area').scrollTop = 0;
+
+      document.querySelectorAll('.day-btn').forEach((btn, index) => {
+        const isCurrent = (index + 1) === day;
+        if (isCurrent) {
+            btn.classList.add('active', 'border-2', 'border-cyan-400', 'shadow-[0_4px_12px_rgba(6,182,212,0.3)]', 'scale-110');
+            btn.classList.remove('border-cyan-100', 'shadow-sm', 'scale-100');
+        } else {
+            btn.classList.remove('active', 'border-2', 'border-cyan-400', 'shadow-[0_4px_12px_rgba(6,182,212,0.3)]', 'scale-110');
+            btn.classList.add('border-cyan-100', 'shadow-sm', 'scale-100');
+        }
+      });
+      document.getElementById(`btn-day${day}`).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  </script>
+</body>
+</html>
