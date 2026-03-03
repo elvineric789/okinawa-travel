@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>幸福沖繩之旅 - 旅遊花費</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    // Firebase 設定
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJ6e1bbgtZYC2yGa_N69pud-9y8OAx0aY",
+      authDomain: "okinawa-travel-24e59.firebaseapp.com",
+      projectId: "okinawa-travel-24e59",
+      storageBucket: "okinawa-travel-24e59.firebasestorage.app",
+      messagingSenderId: "646446031010",
+      appId: "1:646446031010:web:e86ddbc128c3cc64aaf7fb"
+    };
+
+    // 初始化 Firebase 與 Firestore
+    let db;
+    try {
+      const app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+      console.log("Firebase 服務啟動完成！");
+      // 延遲載入資料，確保 DOM 已經準備好
+      setTimeout(() => { if (window.loadData) window.loadData('expense'); }, 500);
+    } catch (error) {
+      console.error("Firebase 初始化失敗：", error);
+    }
+
+    // 全域變數：管理花費狀態
+    let currentExpenses = [];
+    let editingExpenseId = null;
+    let deleteTarget = { id: null, type: null };
+
+    // ----- 記帳表單操作 -----
+    window.toggleExpenseForm = function() {
+      const form = document.getElementById('expense-form-card');
+      if(form.classList.contains('hidden')) {
+        form.classList.remove('hidden');
+        document.getElementById('expense-date').value = '2026-04-21';
+        document.getElementById('expense-category').value = '飲食';
+        document.getElementById('expense-item').value = '';
+        document.getElementById('expense-amount').value = '';
+        document.getElementById('save-expense-btn').innerText = "儲存消費";
+        editingExpenseId = null;
+      } else {
+        form.classList.add('hidden');
+      }
+    };
+
+    window.editExpense = function(id) {
+      const exp = currentExpenses.find(e => e.id === id);
+      if (!exp) return;
+      editingExpenseId = id;
+      document.getElementById('expense-date').value = exp.date || '2026-04-21';
+      document.getElementById('expense-category').value = exp.category || '飲食';
+      document.getElementById('expense-item').value = exp.item || '';
+      document.getElementById('expense-amount').value = exp.amount || '';
+      document.getElementById('expense-form-card').classList.remove('hidden');
+      document.getElementById('save-expense-btn').innerText = "更新消費";
+      document.getElementById('view-expense').scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // ----- 刪除邏輯 -----
+    window.requestDelete = function(id, type) {
+      deleteTarget = { id, type };
+      document.getElementById('delete-confirm-modal').classList.remove('hidden');
+      document.getElementById('delete-confirm-modal').classList.add('flex');
+    };
+
+    window.closeDeleteModal = function() {
+      deleteTarget = { id: null, type: null };
+      document.getElementById('delete-confirm-modal').classList.add('hidden');
+      document.getElementById('delete-confirm-modal').classList.remove('flex');
+    };
+
+    window.confirmDeleteAction = async function() {
+      const { id } = deleteTarget;
+      if (!id) return;
+      closeDeleteModal();
+      
+      try {
+        await deleteDoc(doc(db, "expenses", id));
+        window.loadData('expense');
+      } catch(e) { 
+        console.error("刪除失敗", e); 
+      }
+    };
+
+    // ----- 儲存邏輯 -----
+    window.saveData = async function(type) {
+      const btn = event.target;
+      const originalText = btn.innerText;
+      btn.innerText = "處理中...";
+      btn.disabled = true;
+
+      try {
+        if (type === 'expense') {
+          const date = document.getElementById('expense-date').value;
+          const category = document.getElementById('expense-category').value;
+          const item = document.getElementById('expense-item').value;
+          const amount = document.getElementById('expense-amount').value;
+          
+          if(!item || !amount) throw new Error("請完整填寫消費項目與金額");
+
+          if (editingExpenseId) {
+            await updateDoc(doc(db, "expenses", editingExpenseId), { 
+              date: date, 
+              category: category,
+              item: item, 
+              amount: Number(amount), 
+              timestamp: new Date() 
+            });
+          } else {
+            await addDoc(collection(db, "expenses"), { 
+              date: date, 
+              category: category,
+              item: item, 
+              amount: Number(amount), 
+              timestamp: new Date() 
+            });
+          }
+          document.getElementById('expense-form-card').classList.add('hidden');
+        }
+        await window.loadData(type);
+      } catch (e) {
+        alert(e.message || "處理過程發生錯誤");
+      } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
+    };
+
+    // ----- 資料讀取與渲染清單 -----
+    window.loadData = async function(type) {
+      if (!db) return;
+      const listContainer = document.getElementById(type + '-list');
+      listContainer.innerHTML = '<div class="text-center text-cyan-600 py-4 animate-pulse">更新數據中...</div>';
+
+      try {
+        const q = query(collection(db, 'expenses'));
+        const querySnapshot = await getDocs(q);
+        const docsArray = [];
+        querySnapshot.forEach(doc => docsArray.push({ id: doc.id, ...doc.data() }));
+        docsArray.sort((a, b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
+
+        currentExpenses = docsArray;
+        listContainer.innerHTML = docsArray.length ? '' : '<div class="text-center text-gray-400 py-4">尚無任何紀錄</div>';
+
+        docsArray.forEach((data) => {
+          const div = document.createElement('div');
+          div.className = 'bg-white rounded-xl shadow-sm mb-4 border-l-4 border-sky-500 overflow-hidden transform transition duration-300 hover:scale-[1.01]';
+          div.innerHTML = `
+            <div class="p-4 flex justify-between items-start gap-3">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-0.5">
+                  <div class="text-[10px] font-bold text-sky-500">${data.date || ''}</div>
+                  ${data.category ? `<div class="bg-sky-50 text-sky-600 px-1.5 py-0.5 rounded text-[9px] font-bold">${data.category}</div>` : ''}
+                </div>
+                <h4 class="font-bold text-gray-800 text-[16px] leading-tight break-words">${data.item}</h4>
+              </div>
+              <div class="flex items-center gap-3 shrink-0 pt-0.5">
+                <span class="text-sky-600 font-black text-lg">$${data.amount}</span>
+                <div class="flex gap-1 bg-gray-50 rounded-lg p-1">
+                  <button onclick="editExpense('${data.id}')" class="text-gray-400 hover:text-sky-500 transition-colors p-0.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                  </button>
+                  <button onclick="requestDelete('${data.id}', 'expense')" class="text-gray-400 hover:text-red-500 transition-colors p-0.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                  </button>
+                </div>
+              </div>
+            </div>`;
+          listContainer.appendChild(div);
+        });
+      } catch (e) { 
+        console.error("資料加載失敗：", e); 
+        listContainer.innerHTML = '<div class="text-center text-red-500 py-4">讀取失敗，請確認網路連線</div>';
+      }
+    };
+  </script>
+</head>
+<body class="bg-cyan-50 flex justify-center items-center min-h-screen m-0 py-4 font-sans text-gray-800">
+
+  <div class="w-full h-screen bg-cyan-50 shadow-2xl flex flex-col relative">
+        
+    
+    <!-- 主滾動區域 -->
+    <div class="flex-1 p-5 overflow-y-auto pb-24" id="content-area">
+      
+      <!-- ========================================================================= -->
+      <!--                                [模塊 4] 旅遊花費分頁                        -->
+      <!-- ========================================================================= -->
+      <div id="view-expense" class="block animate-fade-in pb-4">
+        
+        <!-- 花費標題與新增按鈕 -->
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-bold text-cyan-800 flex items-center gap-2">
+            <svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            旅遊花費
+          </h2>
+          <button onclick="toggleExpenseForm()" class="flex items-center gap-1 bg-sky-100 text-sky-600 px-3 py-1.5 rounded-full text-sm font-bold shadow-sm hover:bg-sky-200 active:scale-95 transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> 新增消費
+          </button>
+        </div>
+
+        <!-- 隱藏的記帳輸入表單 -->
+        <div id="expense-form-card" class="hidden bg-white p-4 rounded-xl shadow-sm mb-6 border border-cyan-100 animate-fade-in">
+          <select id="expense-date" class="w-full p-3 mb-3 border rounded-lg bg-gray-50 focus:bg-white text-sm text-gray-700 font-medium outline-none focus:ring-2 focus:ring-sky-500 transition-colors">
+            <option value="2026-04-21">2026/04/21 (二) - 第一天</option>
+            <option value="2026-04-22">2026/04/22 (三) - 第二天</option>
+            <option value="2026-04-23">2026/04/23 (四) - 第三天</option>
+            <option value="2026-04-24">2026/04/24 (五) - 第四天</option>
+            <option value="2026-04-25">2026/04/25 (六) - 第五天</option>
+          </select>
+          <select id="expense-category" class="w-full p-3 mb-3 border rounded-lg bg-gray-50 focus:bg-white text-sm text-gray-700 font-medium outline-none focus:ring-2 focus:ring-sky-500 transition-colors">
+            <option value="飲食">🍔 飲食</option>
+            <option value="交通">🚕 交通</option>
+            <option value="購物">🛍️ 購物</option>
+            <option value="住宿">🏨 住宿</option>
+            <option value="娛樂">🎟️ 娛樂</option>
+            <option value="其他">📦 其他</option>
+          </select>
+          <input type="text" id="expense-item" placeholder="消費項目 (例: 拉麵、伴手禮)" class="w-full p-3 mb-3 border rounded-lg bg-gray-50 focus:bg-white font-bold text-gray-700 outline-none focus:ring-2 focus:ring-sky-500 transition-colors">
+          <input type="number" id="expense-amount" placeholder="金額 (NT$)" class="w-full p-3 mb-4 border rounded-lg bg-gray-50 focus:bg-white font-black text-sky-600 outline-none focus:ring-2 focus:ring-sky-500 transition-colors">
+          <button id="save-expense-btn" onclick="saveData('expense')" class="w-full bg-sky-500 text-white font-bold py-3 rounded-lg shadow-md hover:bg-sky-600 active:scale-95 transition-all">儲存消費</button>
+        </div>
+
+        <!-- 記帳歷史列表清單 -->
+        <div id="expense-list"></div>
+      </div>
+
+    </div>
+
+    <!-- 底部導覽 -->
+    <div class="flex border-t border-cyan-100 bg-white fixed bottom-0 w-full shadow-[0_-4px_15px_rgba(0,0,0,0.05)] z-20 pb-safe">
+      <button onclick="window.location.href='index.html'" id="nav-home" class="nav-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+        <span class="text-xs font-medium">首頁</span>
+      </button>
+      <button onclick="window.location.href='info.html'" id="nav-info" class="nav-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span class="text-xs font-medium">須知</span>
+      </button>
+      <button onclick="window.location.href='itinerary.html'" id="nav-itinerary" class="nav-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+        <span class="text-xs font-medium">行程</span>
+      </button>
+      <button onclick="window.location.href='expense.html'" id="nav-expense" class="nav-btn active flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span class="text-xs font-medium">記帳</span>
+      </button>
+      <button onclick="window.location.href='note.html'" id="nav-note" class="nav-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+        <span class="text-xs font-medium">手札</span>
+      </button>
+    </div>
+
+    <!-- 自訂刪除確認對話框 -->
+    <div id="delete-confirm-modal" class="hidden absolute inset-0 z-[100] bg-black/40 backdrop-blur-sm justify-center items-center p-4">
+      <div class="bg-white rounded-[20px] p-6 w-full max-w-[300px] shadow-2xl text-center transform animate-fade-in">
+        <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4 text-sky-500">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">確定要刪除嗎？</h3>
+        <p class="text-sm text-gray-500 mb-6">此動作將無法復原。</p>
+        <div class="flex gap-3">
+          <button onclick="closeDeleteModal()" class="flex-1 py-3 bg-gray-100 text-gray-600 font-bold rounded-xl hover:bg-gray-200 active:scale-95 transition-all">取消</button>
+          <button onclick="confirmDeleteAction()" class="flex-1 py-3 bg-sky-500 text-white font-bold rounded-xl shadow-md hover:bg-sky-600 active:scale-95 transition-all">確定刪除</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <style>
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: #93c5fd; border-radius: 10px; }
+    
+    /* 導覽列動畫 */
+    .nav-btn { color: #9ca3af; transition: all 0.3s ease; }
+    .nav-btn.active { color: #0ea5e9; }
+    .nav-btn.active svg { animation: jumpBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; stroke-width: 2.5; }
+    @keyframes jumpBounce { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-4px) scale(1.1); } 100% { transform: translateY(0) scale(1); } }
+  </style>
+
+</body>
+</html>

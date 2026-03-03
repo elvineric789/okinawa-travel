@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>幸福沖繩之旅 - 旅遊手札</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, getDoc, query, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+
+    // Firebase 設定
+    const firebaseConfig = {
+      apiKey: "AIzaSyAJ6e1bbgtZYC2yGa_N69pud-9y8OAx0aY",
+      authDomain: "okinawa-travel-24e59.firebaseapp.com",
+      projectId: "okinawa-travel-24e59",
+      storageBucket: "okinawa-travel-24e59.firebasestorage.app",
+      messagingSenderId: "646446031010",
+      appId: "1:646446031010:web:e86ddbc128c3cc64aaf7fb"
+    };
+
+    // 初始化 Firebase, Firestore 與 Storage
+    let db;
+    let storage;
+    try {
+      const app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+      storage = getStorage(app);
+      console.log("Firebase 服務啟動完成！");
+      // 延遲載入資料，確保 DOM 已經準備好
+      setTimeout(() => { if (window.loadData) window.loadData('note'); }, 500);
+    } catch (error) {
+      console.error("Firebase 初始化失敗：", error);
+    }
+
+    // 全域變數：管理手札狀態
+    let currentNotes = []; 
+    let editingNoteId = null;
+    let editingImages = []; 
+    let imagesToDelete = []; 
+    let deleteTarget = { id: null, type: null };
+
+    // ----- 手札表單操作 -----
+    window.toggleNoteForm = function() {
+      const form = document.getElementById('note-form-card');
+      if(form.classList.contains('hidden')) {
+        form.classList.remove('hidden');
+        document.getElementById('note-date').value = '2026-04-21'; 
+        document.getElementById('note-title').value = '';
+        document.getElementById('note-content').value = '';
+        document.getElementById('note-image').value = '';
+        document.getElementById('save-note-btn').innerText = "儲存手札";
+        editingNoteId = null;
+        editingImages = [];
+        imagesToDelete = [];
+        window.renderImagePreview();
+      } else {
+        form.classList.add('hidden');
+      }
+    };
+
+    window.editNote = function(id) {
+      const note = currentNotes.find(n => n.id === id);
+      if (!note) return;
+
+      editingNoteId = id;
+      document.getElementById('note-date').value = note.date || '2026-04-21';
+      document.getElementById('note-title').value = note.title || '';
+      document.getElementById('note-content').value = note.content || '';
+      document.getElementById('note-image').value = ''; 
+      
+      editingImages = note.images ? [...note.images] : [];
+      // 兼容舊版單圖結構
+      if (note.imageUrl && editingImages.length === 0) {
+        try {
+          const path = decodeURIComponent(note.imageUrl.split('/o/')[1].split('?')[0]);
+          editingImages.push({ url: note.imageUrl, path: path });
+        } catch(e) {
+          editingImages.push({ url: note.imageUrl, path: null });
+        }
+      }
+      
+      imagesToDelete = [];
+      window.renderImagePreview();
+
+      document.getElementById('note-form-card').classList.remove('hidden');
+      document.getElementById('save-note-btn').innerText = "更新手札";
+      document.getElementById('view-note').scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // ----- 刪除邏輯 (包含刪除 Storage 圖片) -----
+    window.requestDelete = function(id, type) {
+      deleteTarget = { id, type };
+      document.getElementById('delete-confirm-modal').classList.remove('hidden');
+      document.getElementById('delete-confirm-modal').classList.add('flex');
+    };
+
+    window.closeDeleteModal = function() {
+      deleteTarget = { id: null, type: null };
+      document.getElementById('delete-confirm-modal').classList.add('hidden');
+      document.getElementById('delete-confirm-modal').classList.remove('flex');
+    };
+
+    window.confirmDeleteAction = async function() {
+      const { id } = deleteTarget;
+      if (!id) return;
+      window.closeDeleteModal();
+      
+      try {
+        const noteRef = doc(db, "notes", id);
+        const noteSnap = await getDoc(noteRef);
+        if (noteSnap.exists()) {
+          const data = noteSnap.data();
+          const imgs = data.images || [];
+          for (let img of imgs) {
+            if (img.path) {
+              try { await deleteObject(ref(storage, img.path)); } catch(e) {}
+            }
+          }
+        }
+        await deleteDoc(noteRef);
+        window.loadData('note');
+      } catch(e) { 
+        console.error("刪除失敗", e); 
+      }
+    };
+
+    // ----- 儲存邏輯 (包含圖片上傳) -----
+    window.saveData = async function(type) {
+      const btn = event.target;
+      const originalText = btn.innerText;
+      btn.innerText = "處理中...";
+      btn.disabled = true;
+
+      try {
+        if (type === 'note') {
+          const date = document.getElementById('note-date').value;
+          const title = document.getElementById('note-title').value;
+          const content = document.getElementById('note-content').value;
+          const fileInput = document.getElementById('note-image');
+          const files = fileInput.files;
+
+          let newUploadedImages = [];
+          for (let i = 0; i < files.length; i++) {
+            const filePath = 'notes/' + Date.now() + '_' + Math.floor(Math.random()*1000) + '_' + files[i].name;
+            const snapshot = await uploadBytes(ref(storage, filePath), files[i]);
+            const url = await getDownloadURL(snapshot.ref);
+            newUploadedImages.push({ url: url, path: filePath });
+          }
+
+          // 刪除被移除的舊圖片
+          for (let img of imagesToDelete) {
+            if (img.path) { try { await deleteObject(ref(storage, img.path)); } catch(e) {} }
+          }
+
+          const finalImages = editingImages.concat(newUploadedImages);
+          if (editingNoteId) {
+            await updateDoc(doc(db, "notes", editingNoteId), { 
+              date, 
+              title, 
+              content, 
+              images: finalImages, 
+              timestamp: new Date() 
+            });
+          } else {
+            await addDoc(collection(db, "notes"), { 
+              date, 
+              title, 
+              content, 
+              images: finalImages, 
+              timestamp: new Date() 
+            });
+          }
+          document.getElementById('note-form-card').classList.add('hidden');
+        }
+        await window.loadData(type);
+      } catch (e) {
+        alert(e.message || "儲存失敗");
+      } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
+    };
+
+    // ----- 資料讀取與渲染清單 -----
+    window.loadData = async function(type) {
+      if (!db) return;
+      const listContainer = document.getElementById('note-list');
+      listContainer.innerHTML = '<div class="text-center text-cyan-600 py-4 animate-pulse">更新數據中...</div>';
+
+      try {
+        const q = query(collection(db, 'notes'));
+        const querySnapshot = await getDocs(q);
+        const docsArray = [];
+        querySnapshot.forEach(doc => docsArray.push({ id: doc.id, ...doc.data() }));
+        docsArray.sort((a, b) => (b.timestamp?.toMillis() || 0) - (a.timestamp?.toMillis() || 0));
+
+        currentNotes = docsArray;
+        listContainer.innerHTML = docsArray.length ? '' : '<div class="text-center text-gray-400 py-4">尚無任何手札紀錄</div>';
+
+        docsArray.forEach((data) => {
+          const div = document.createElement('div');
+          div.className = 'bg-white rounded-xl shadow-sm mb-4 border-l-4 border-sky-500 overflow-hidden';
+          
+          let imgBtnHtml = (data.images?.length || 0) > 0 ? `<button onclick="window.toggleNoteImages('${data.id}', this, ${data.images.length})" class="mt-4 text-[13px] text-sky-600 font-bold flex items-center bg-sky-50 px-3 py-1.5 rounded-lg w-max hover:bg-sky-100 transition-colors"><svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>顯示 ${data.images.length} 張照片</button><div id="note-images-${data.id}" class="hidden mt-3 grid grid-cols-2 gap-2 animate-fade-in">${data.images.map((img, i) => `<img src="${img.url}" onclick="window.openLightbox('${data.id}', ${i})" class="w-full h-24 rounded-lg object-cover cursor-pointer border shadow-sm hover:opacity-90 transition-opacity">`).join('')}</div>` : '';
+          
+          div.innerHTML = `
+            <div onclick="window.toggleNoteDetail('${data.id}')" class="p-4 cursor-pointer hover:bg-sky-50/50 flex justify-between items-start gap-4 transition-colors">
+              <div class="flex-1 min-w-0">
+                <div class="text-[10px] font-bold text-sky-500 mb-0.5">${data.date || ''}</div>
+                <h4 class="font-bold text-gray-800 text-[16px] leading-tight break-words whitespace-normal">${data.title || '無標題'}</h4>
+              </div>
+              <div class="flex items-center gap-2 shrink-0 pt-1">
+                <div class="flex gap-1 bg-gray-50 rounded-lg p-1">
+                  <button onclick="event.stopPropagation(); window.editNote('${data.id}')" class="text-gray-400 hover:text-sky-500 p-0.5 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></button>
+                  <button onclick="event.stopPropagation(); window.requestDelete('${data.id}', 'note')" class="text-gray-400 hover:text-red-500 p-0.5 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                </div>
+                <svg id="note-arrow-${data.id}" class="w-4 h-4 text-gray-300 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+              </div>
+            </div>
+            <div id="note-detail-${data.id}" class="hidden px-4 pb-4 border-t border-gray-50 bg-white pt-3">
+              <p class="text-sm text-gray-600 whitespace-pre-wrap leading-relaxed break-words">${data.content || ''}</p>${imgBtnHtml}
+            </div>`;
+          listContainer.appendChild(div);
+        });
+      } catch (e) { 
+        console.error("資料加載失敗：", e); 
+        listContainer.innerHTML = '<div class="text-center text-red-500 py-4">讀取失敗，請確認網路連線</div>';
+      }
+    };
+  </script>
+</head>
+<body class="bg-cyan-50 flex justify-center items-center min-h-screen m-0 py-4 font-sans text-gray-800">
+
+  <div class="w-full h-screen bg-cyan-50 shadow-2xl flex flex-col relative">
+        
+        <!-- 主滾動區域 -->
+    <div class="flex-1 p-5 overflow-y-auto pb-24" id="content-area">
+      
+      <!-- ========================================================================= -->
+      <!--                                [模塊 5] 旅遊手札分頁                        -->
+      <!-- ========================================================================= -->
+      <div id="view-note" class="block animate-fade-in pb-4">
+        
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-bold text-cyan-800 flex items-center gap-2">
+            <svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+            旅遊手札
+          </h2>
+          <button onclick="window.toggleNoteForm()" class="flex items-center gap-1 bg-sky-100 text-sky-600 px-3 py-1.5 rounded-full text-sm font-bold shadow-sm hover:bg-sky-200 active:scale-95 transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg> 新增手札
+          </button>
+        </div>
+
+        <div id="note-form-card" class="hidden bg-white p-4 rounded-xl shadow-sm mb-6 border border-cyan-100 animate-fade-in">
+          <!-- 限制日期的下拉式選單 -->
+          <select id="note-date" class="w-full p-3 mb-3 border rounded-lg bg-gray-50 focus:bg-white text-sm text-gray-700 font-medium outline-none focus:ring-2 focus:ring-sky-500 transition-colors">
+            <option value="2026-04-21">2026/04/21 (二) - 第一天</option>
+            <option value="2026-04-22">2026/04/22 (三) - 第二天</option>
+            <option value="2026-04-23">2026/04/23 (四) - 第三天</option>
+            <option value="2026-04-24">2026/04/24 (五) - 第四天</option>
+            <option value="2026-04-25">2026/04/25 (六) - 第五天</option>
+          </select>
+          <input type="text" id="note-title" placeholder="手札標題" class="w-full p-3 mb-3 border rounded-lg bg-gray-50 focus:bg-white font-bold text-gray-700 outline-none focus:ring-2 focus:ring-sky-500 transition-colors">
+          <textarea id="note-content" placeholder="內容..." rows="4" class="w-full p-3 mb-3 border rounded-lg bg-gray-50 focus:bg-white shadow-sm resize-none outline-none focus:ring-2 focus:ring-sky-500 transition-colors"></textarea>
+          
+          <div id="existing-images-preview" class="mb-3"></div>
+          
+          <div class="mb-4">
+            <label class="block text-[11px] font-bold text-sky-600 mb-1">📸 上傳照片 (可多選)</label>
+            <input type="file" id="note-image" accept="image/*" multiple class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 transition-colors">
+          </div>
+          <button id="save-note-btn" onclick="window.saveData('note')" class="w-full bg-sky-500 text-white font-bold py-3 rounded-lg shadow-md hover:bg-sky-600 active:scale-95 transition-all">儲存手札</button>
+        </div>
+
+        <!-- 手札歷史列表清單 -->
+        <div id="note-list"></div>
+      </div>
+
+    </div>
+
+    <!-- 底部導覽 -->
+    <div class="flex border-t border-cyan-100 bg-white fixed bottom-0 w-full shadow-[0_-4px_15px_rgba(0,0,0,0.05)] z-20 pb-safe">
+      <button onclick="window.location.href='index.html'" id="nav-home" class="nav-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+        <span class="text-xs font-medium">首頁</span>
+      </button>
+      <button onclick="window.location.href='info.html'" id="nav-info" class="nav-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span class="text-xs font-medium">須知</span>
+      </button>
+      <button onclick="window.location.href='itinerary.html'" id="nav-itinerary" class="nav-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+        <span class="text-xs font-medium">行程</span>
+      </button>
+      <button onclick="window.location.href='expense.html'" id="nav-expense" class="nav-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span class="text-xs font-medium">記帳</span>
+      </button>
+      <button onclick="window.location.href='note.html'" id="nav-note" class="nav-btn active flex-1 py-2.5 flex flex-col items-center gap-0.5 group">
+        <svg class="nav-icon w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+        <span class="text-xs font-medium">手札</span>
+      </button>
+    </div>
+
+    <!-- 自訂刪除確認對話框 -->
+    <div id="delete-confirm-modal" class="hidden absolute inset-0 z-[100] bg-black/40 backdrop-blur-sm justify-center items-center p-4">
+      <div class="bg-white rounded-[20px] p-6 w-full max-w-[300px] shadow-2xl text-center transform animate-fade-in">
+        <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4 text-sky-500">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">確定要刪除嗎？</h3>
+        <p class="text-sm text-gray-500 mb-6">此動作將無法復原。</p>
+        <div class="flex gap-3">
+          <button onclick="window.closeDeleteModal()" class="flex-1 py-3 bg-gray-100 text-gray-600 font-bold rounded-xl hover:bg-gray-200 active:scale-95 transition-all">取消</button>
+          <button onclick="window.confirmDeleteAction()" class="flex-1 py-3 bg-sky-500 text-white font-bold rounded-xl shadow-md hover:bg-sky-600 active:scale-95 transition-all">確定刪除</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 全螢幕照片燈箱 -->
+    <div id="lightbox-modal" class="hidden absolute inset-0 z-[110] bg-black/95 backdrop-blur-sm flex-col justify-center items-center select-none overflow-hidden">
+      <button onclick="window.closeLightbox()" class="absolute top-4 right-4 text-white p-2 z-[112] hover:text-gray-300">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+      <div class="absolute top-4 left-0 right-0 text-center text-white text-sm font-bold tracking-widest z-[111]" id="lightbox-counter">1 / 1</div>
+      <button onclick="window.changeLightboxImage(-1)" class="absolute left-1 top-1/2 -translate-y-1/2 text-white p-3 z-[112] opacity-70 hover:opacity-100 transition-opacity">
+        <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
+      </button>
+      <div class="relative w-full h-full flex items-center justify-center p-4">
+        <img id="lightbox-img" src="" class="max-w-full max-h-[85%] object-contain transition-transform">
+      </div>
+      <button onclick="window.changeLightboxImage(1)" class="absolute right-1 top-1/2 -translate-y-1/2 text-white p-3 z-[112] opacity-70 hover:opacity-100 transition-opacity">
+        <svg class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+      </button>
+    </div>
+
+  </div>
+
+  <style>
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: #93c5fd; border-radius: 10px; }
+    
+    /* 導覽列動畫 */
+    .nav-btn { color: #9ca3af; transition: all 0.3s ease; }
+    .nav-btn.active { color: #0ea5e9; }
+    .nav-btn.active svg { animation: jumpBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; stroke-width: 2.5; }
+    @keyframes jumpBounce { 0% { transform: translateY(0) scale(1); } 50% { transform: translateY(-4px) scale(1.1); } 100% { transform: translateY(0) scale(1); } }
+  </style>
+
+  <script>
+    // ----- 圖片預覽與燈箱邏輯 -----
+    window.renderImagePreview = function() {
+      const container = document.getElementById('existing-images-preview');
+      container.innerHTML = editingImages.length ? `<p class="text-[11px] font-bold text-sky-600 mb-2">已上傳照片：</p><div class="flex flex-wrap gap-2">${editingImages.map((img, i) => `<div class="relative"><img src="${img.url}" class="w-14 h-14 object-cover rounded-lg border shadow-sm"><button onclick="window.removeExistingImage(${i}, event)" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] hover:bg-red-600 transition-colors">✕</button></div>`).join('')}</div>` : '';
+    };
+
+    window.removeExistingImage = function(idx, event) {
+      event.preventDefault();
+      imagesToDelete.push(editingImages[idx]);
+      editingImages.splice(idx, 1);
+      window.renderImagePreview();
+    };
+
+    window.toggleNoteDetail = function(id) {
+      const detail = document.getElementById('note-detail-' + id);
+      const arrow = document.getElementById('note-arrow-' + id);
+      if (detail) detail.classList.toggle('hidden');
+      if (arrow) arrow.classList.toggle('rotate-180');
+    };
+
+    window.toggleNoteImages = function(noteId, btnEl, count) {
+      const container = document.getElementById('note-images-' + noteId);
+      const isHidden = container.classList.toggle('hidden');
+      btnEl.innerHTML = isHidden ? `<svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>顯示 ${count} 張照片` : `<svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" /></svg>收起照片`;
+    };
+
+    let lbImages=[], lbCurrentIndex=0;
+    window.openLightbox = function(id, i) { 
+      const note = currentNotes.find(n => n.id === id);
+      if (!note) return;
+      lbImages = note.images; lbCurrentIndex = i;
+      document.getElementById('lightbox-img').src = lbImages[i].url;
+      document.getElementById('lightbox-counter').innerText = `${i+1} / ${lbImages.length}`;
+      document.getElementById('lightbox-modal').classList.replace('hidden', 'flex');
+    };
+
+    window.closeLightbox = () => document.getElementById('lightbox-modal').classList.replace('flex', 'hidden');
+    
+    window.changeLightboxImage = (dir) => {
+      if (lbImages.length === 0) return;
+      lbCurrentIndex = (lbCurrentIndex + dir + lbImages.length) % lbImages.length;
+      document.getElementById('lightbox-img').src = lbImages[lbCurrentIndex].url;
+      document.getElementById('lightbox-counter').innerText = `${lbCurrentIndex+1} / ${lbImages.length}`;
+    };
+
+    // 觸控滑動照片邏輯 (用於行動裝置)
+    let touchStartX = 0;
+    let touchEndX = 0;
+    window.addEventListener('touchstart', e => {
+      const modal = document.getElementById('lightbox-modal');
+      if (modal && !modal.classList.contains('hidden')) {
+        touchStartX = e.changedTouches[0].screenX;
+      }
+    });
+    window.addEventListener('touchend', e => {
+      const modal = document.getElementById('lightbox-modal');
+      if (modal && !modal.classList.contains('hidden')) {
+        touchEndX = e.changedTouches[0].screenX;
+        if (touchEndX < touchStartX - 40) window.changeLightboxImage(1);  // 向左滑
+        if (touchEndX > touchStartX + 40) window.changeLightboxImage(-1); // 向右滑
+      }
+    });
+  </script>
+</body>
+</html>
